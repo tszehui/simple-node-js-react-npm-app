@@ -8,23 +8,19 @@ pipeline {
             			}
         		}
 		}
-		 stage(' Dependency-Check Vulnerabilities') {
+		 stage('Dependency-Check') {
             		steps {
-                		script {
-                    			withCredentials([string(credentialsId: 'NVD-API-KEY', variable: 'NVD-API-KEY')]) {
-                        		dependencyCheck additionalArguments: """
-                            		-o './'
-                            		-s'./'
-                            		-f 'XML'
-                            		--prettyPrint
-                           		--nvdApiKey \${NVD-API-KEY}
-                        		""", odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
-                    			}
-                  		archiveArtifacts artifacts: 'dependency-check-report.xml', allowEmptyArchive: false
-                		dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-                    		}
-               	 	}
-		}
+                		dependencyCheck additionalArguments: '''
+                    		-o './'
+                    		-s './'
+                    		-f 'ALL'
+                    		--prettyPrint
+                    		--nvdApiKey ${NVD_API_KEY}
+                		''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+                
+                		dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+            		}
+        	}
 
 	}
 }
