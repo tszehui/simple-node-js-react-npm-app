@@ -11,7 +11,7 @@ pipeline {
 		 stage(' Dependency-Check Vulnerabilities') {
             		steps {
                 		script {
-                    			withCredentials([string(credentialsId: 'NVD-API-KEY', variable: 'NVD_API_KEY')]) {
+                    			withCredentials([string(credentialsId: 'NVD-API-KEY', variable: 'NVD-API-KEY')]) {
                         		dependencyCheck additionalArguments: """
                             		-o './'
                             		-s'./'
